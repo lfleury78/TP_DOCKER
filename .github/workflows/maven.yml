@@ -23,8 +23,12 @@ jobs:
     - name: Verify Java version
       run: java -version
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Build, test and generate JaCoCo report
+      run: mvn -B verify --file pom.xml
 
-    - name: Run Unit Tests
-      run: mvn -B test --file pom.xml
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        files: ./target/site/jacoco/jacoco.xml
+        fail_ci_if_error: true
+        verbose: true
